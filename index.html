@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Juego de Geometría</title>
+  <style>
+    body { font-family: sans-serif; background: #bde0fe; text-align: center; }
+    .question-box { background: #fff; padding: 20px; margin: 20px auto; width: 80%; border-radius: 10px; }
+    button { margin: 10px; padding: 10px 20px; border: none; border-radius: 5px; background: #80ed99; cursor: pointer; }
+    button:hover { background: #57cc99; }
+    .score, .lives { font-size: 18px; margin: 10px; }
+  </style>
+</head>
+<body>
+
+  <h1>🏹 Juego de Geometría</h1>
+  <div class="score">Puntos: <span id="score">0</span></div>
+  <div class="lives">❤️❤️❤️</div>
+
+  <div class="question-box">
+    <h2 id="question">Pregunta aquí</h2>
+    <div id="answers"></div>
+  </div>
+
+  <script>
+    const questions = [
+      { q: "¿Qué es una línea recta?", options: ["Una línea que no se curva", "Una línea con curvas", "Una línea cerrada"], answer: "Una línea que no se curva" },
+      { q: "¿Cómo se llama una línea que va de arriba a abajo?", options: ["Horizontal", "Vertical", "Diagonal"], answer: "Vertical" },
+      { q: "¿Cuándo dos líneas son paralelas?", options: ["Cuando se cruzan", "Cuando nunca se tocan", "Cuando forman una T"], answer: "Cuando nunca se tocan" },
+      { q: "¿Cuántos lados tiene un triángulo?", options: ["3", "4", "5"], answer: "3" },
+      { q: "¿Qué figura tiene cuatro lados iguales?", options: ["Triángulo", "Rectángulo", "Cuadrado"], answer: "Cuadrado" },
+      { q: "¿Cómo se llama la línea que rodea un círculo?", options: ["Circunferencia", "Diagonal", "Recta"], answer: "Circunferencia" },
+      { q: "¿Qué son las caras de un prisma?", options: ["Sus esquinas", "Sus superficies planas", "Sus vértices"], answer: "Sus superficies planas" },
+      { q: "¿Cuántos vértices tiene un cubo?", options: ["6", "8", "12"], answer: "8" },
+      { q: "¿Qué diferencia hay entre un cilindro y un cono?", options: ["El cilindro termina en punta", "El cono termina en punta y el cilindro no", "Son iguales"], answer: "El cono termina en punta y el cilindro no" },
+      { q: "¿Qué figura es un poliedro?", options: ["Un círculo", "Un cubo", "Un cilindro"], answer: "Un cubo" }
+    ];
+
+    let current = 0;
+    let score = 0;
+    let lives = 3;
+
+    function loadQuestion() {
+      if (current >= questions.length || lives === 0) {
+        document.querySelector(".question-box").innerHTML = `<h2>Juego terminado</h2><p>Puntaje final: ${score}</p>`;
+        return;
+      }
+
+      document.getElementById("question").innerText = questions[current].q;
+      const answersDiv = document.getElementById("answers");
+      answersDiv.innerHTML = "";
+
+      questions[current].options.forEach(opt => {
+        const btn = document.createElement("button");
+        btn.innerText = opt;
+        btn.onclick = () => checkAnswer(opt);
+        answersDiv.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(selected) {
+      if (selected === questions[current].answer) {
+        score += 10;
+        document.getElementById("score").innerText = score;
+      } else {
+        lives--;
+        document.querySelector(".lives").innerHTML = "❤️".repeat(lives);
+      }
+      current++;
+      loadQuestion();
+    }
+
+    loadQuestion();
+  </script>
+
+</body>
+</html>
+
